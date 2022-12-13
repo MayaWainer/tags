@@ -1,0 +1,75 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+interface TagConfigurationInterface {
+  id: Int!
+  type: TagType!
+  name: String!
+}
+
+enum TagType {
+  ValueArray
+  Number
+}
+
+type ValueArrayTagConfigurationDto implements TagConfigurationInterface {
+  id: Int!
+  type: TagType!
+  name: String!
+  values: [String!]!
+}
+
+type Tag {
+  id: Int!
+  tagConfiguration: TagConfigurationInterface!
+  values: [String!]!
+}
+
+type Expense implements Taggable {
+  tags: [Tag!]!
+  id: Int!
+  amountInCardCurrency: Float!
+  conversionRate: Float!
+  merchantName: String!
+  createdAt: String!
+}
+
+interface Taggable {
+  tags: [Tag!]!
+}
+
+type Query {
+  getExpense(id: Float!): Expense!
+  getAllExpense: [Expense!]!
+  getTag(id: Float!): Tag!
+  getManyTags(input: FindManyTags!): [Tag!]!
+  getAllTags: [Tag!]!
+  getTagConfiguration(id: Float!): TagConfigurationInterface!
+  getAllTagConfigurations: [TagConfigurationInterface!]!
+}
+
+input FindManyTags {
+  ids: [Int!]!
+}
+
+type Mutation {
+  createTagConfiguration(input: CreateTagConfigurationInput!): TagConfigurationInterface!
+  updateTagConfiguration(input: UpdateTagConfigurationInput!): TagConfigurationInterface!
+}
+
+input CreateTagConfigurationInput {
+  name: String!
+  type: TagType!
+  valueArrayConfig: ValueArrayConfigInput!
+}
+
+input ValueArrayConfigInput {
+  values: [String!]!
+}
+
+input UpdateTagConfigurationInput {
+  id: Int!
+  name: String!
+  valueArrayConfig: ValueArrayConfigInput!
+}

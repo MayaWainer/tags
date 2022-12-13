@@ -1,15 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import {ExpenseDto} from "./dto/expense.dto";
+import {mockExpenses} from "./mockData/expenses.mock";
+import {Expense} from "./interface/expense.interface";
 
 @Injectable()
 export class ExpenseService {
-    async get(): Promise<ExpenseDto> {
-        return {
-            id: 1,
-            amountInCardCurrency: 10,
-            conversionRate: 1,
-            merchantName: 'merchant name',
-            createdAt: '01-01-2020'
-        }
+    readonly expenses: Expense[]
+    constructor() {
+        this.expenses = mockExpenses
+    }
+
+    get(id: number): Expense {
+        return this.expenses.find((e)=> e.id === id)
+    }
+
+    getAll(): Expense[] {
+        return this.expenses
     }
 }
