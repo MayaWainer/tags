@@ -6,7 +6,7 @@ import {TagDto} from "../../tag/dto/tag.dto";
 @ObjectType('Expense', {
     implements: () => [TaggableDto]
 })
-export class ExpenseDto implements TaggableDto{
+export class ExpenseDto implements TaggableDto {
     @Field(() => Int)
     id!: number
 

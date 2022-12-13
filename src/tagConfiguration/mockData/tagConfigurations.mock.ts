@@ -1,11 +1,11 @@
-import {TagType} from "../../common/enum/tagType.enum";
+import {TagConfigurationType} from "../../common/enum/tagType.enum";
 import {TagConfiguration} from "../interface/tagConfiguration";
 
 export const mockTagConfigurations : TagConfiguration[] = [
     {
         id: 1,
         name: 'trip name',
-        type: TagType.ValueArray,
+        type: TagConfigurationType.ValueArray,
         validation: {
             values: ['spain', 'romania', 'israel', 'england']
         }
@@ -13,7 +13,7 @@ export const mockTagConfigurations : TagConfiguration[] = [
     {
         id: 2,
         name: 'subscription name',
-        type: TagType.ValueArray,
+        type: TagConfigurationType.ValueArray,
         validation: {
             values: ['aws','rav kav','ten bis','netflix','mondial khan 11']
         }
@@ -21,7 +21,7 @@ export const mockTagConfigurations : TagConfiguration[] = [
     {
         id: 3,
         name: 'who took part in this meal expense without me TT',
-        type: TagType.ValueArray,
+        type: TagConfigurationType.ValueArray,
         validation: {
             values: ['tal', 'reut', 'mor', 'tamar', 'michal', 'maya', 'tzach?']
         }

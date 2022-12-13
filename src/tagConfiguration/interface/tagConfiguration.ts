@@ -1,9 +1,9 @@
-import {TagType} from "../../common/enum/tagType.enum";
+import {TagConfigurationType} from "../../common/enum/tagType.enum";
 
 export interface TagConfiguration {
     id: number
     name: string
-    type: TagType
+    type: TagConfigurationType
     validation: TagValidation
 }
 

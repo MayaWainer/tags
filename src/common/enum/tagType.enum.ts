@@ -1,7 +1,9 @@
 import { registerEnumType } from '@nestjs/graphql'
 
-export enum TagType {
+
+// TODO: Every tagCOnfigurationType should have a "multiple" version (multiple enum(s), multiple numbers, multiple emails etc...)
+export enum TagConfigurationType {
     ValueArray = 'ValueArray',
     Number = 'Number'
 }
-registerEnumType(TagType, { name: 'TagType' })
+registerEnumType(TagConfigurationType, { name: 'TagType' })

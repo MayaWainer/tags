@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {mockTagConfigurations} from "./mockData/tagConfigurations.mock";
 import {CreateTagConfigurationInput} from "./input/createTagConfiguration.input";
-import {TagType} from "../common/enum/tagType.enum";
+import {TagConfigurationType} from "../common/enum/tagType.enum";
 import {ValueArrayTagValidation, TagConfiguration, TagValidation} from "./interface/tagConfiguration";
 import {UpdateTagConfigurationInput} from "./input/updateTagConfiguration.input";
 
@@ -22,7 +22,7 @@ export class TagConfigurationService {
 
     createTagConfiguration(config: CreateTagConfigurationInput): TagConfiguration {
         let tagValidation: TagValidation
-        if(config.type === TagType.ValueArray)
+        if(config.type === TagConfigurationType.ValueArray)
             tagValidation = {
                 values: config.valueArrayConfig.values
             }

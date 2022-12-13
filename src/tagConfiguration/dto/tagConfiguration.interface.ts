@@ -1,5 +1,5 @@
 import { Field, Float, Int, InterfaceType } from '@nestjs/graphql'
-import {TagType} from "../../common/enum/tagType.enum";
+import {TagConfigurationType} from "../../common/enum/tagType.enum";
 import {ValueArrayTagConfigurationDto} from "./valueArrayTagConfiguration.dto";
 
 @InterfaceType('TagConfigurationInterface', {
@@ -7,12 +7,13 @@ import {ValueArrayTagConfigurationDto} from "./valueArrayTagConfiguration.dto";
         return ValueArrayTagConfigurationDto
     }
 })
+
 export abstract class TagConfigurationInterface {
     @Field(() => Int)
     id!: number
 
-    @Field(() => TagType)
-    type!: TagType
+    @Field(() => TagConfigurationType)
+    type!: TagConfigurationType
 
     @Field()
     name!: string
