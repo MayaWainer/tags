@@ -1,9 +1,10 @@
-import {Parent, ResolveField, Resolver} from '@nestjs/graphql';
-import {ValueListConfigurationDto} from "../dto/valueListTagConfiguration.dto";
+import {Args, Parent, ResolveField, Resolver} from '@nestjs/graphql';
+import {ValueListConfigurationDto} from "../dto/TypeConfiguration/valueListTagConfiguration.dto";
 import {TagConfigurationResolver} from "./tagConfiguration.resolver";
 import {TagConfigurationService} from "../tagConfiguration.service";
 import {TagConfiguration} from "../interface/tagConfiguration";
 import {TagConfigurationType} from "../../common/enum/tagType.enum";
+import {ValueListArgs} from "../dto/valueList.args";
 
 @Resolver(() => ValueListConfigurationDto)
 export class ValueListTagConfigurationResolver extends TagConfigurationResolver{
@@ -12,8 +13,12 @@ export class ValueListTagConfigurationResolver extends TagConfigurationResolver{
     }
 
     @ResolveField(() => [String])
-    valueList(@Parent() config: TagConfiguration): string[] {
+    valueList(@Args() args: ValueListArgs, @Parent() config: TagConfiguration): string[] {
         if(config.type === TagConfigurationType.ValueList)
-            return config.valueList
+        {
+            const start = args.valueListPagination.offset
+            const end = args.valueListPagination.offset + args.valueListPagination.limit
+            return config.valueList.slice(start,end)
+        }
     }
 }

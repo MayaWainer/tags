@@ -3,7 +3,7 @@ import {TagConfigurationService} from "../tagConfiguration.service";
 import {TagConfiguration} from "../interface/tagConfiguration";
 import {TagConfigurationInterface} from "../dto/tagConfiguration.interface";
 import {CreateTagConfigurationInput} from "../input/createTagConfiguration.input";
-import {UpdateTagConfigurationInput} from "../input/updateTagConfiguration.input";
+import {GetManyConfigurationsArgs} from "../dto/getAll.args";
 
 @Resolver(() => TagConfigurationInterface)
 export class TagConfigurationResolver {
@@ -15,17 +15,12 @@ export class TagConfigurationResolver {
     }
 
     @Query(returns => [TagConfigurationInterface])
-    getAllTagConfigurations(): TagConfiguration[] {
-        return this.tagService.getAllTagConfigurations()
+    getAllTagConfigurations(@Args() args: GetManyConfigurationsArgs): TagConfiguration[] {
+        return this.tagService.getAllTagConfigurationsPaginated(args)
     }
 
     @Mutation(returns => TagConfigurationInterface)
     createTagConfiguration(@Args('input') input: CreateTagConfigurationInput): TagConfiguration {
         return this.tagService.createTagConfiguration(input)
     }
-
-    // @Mutation(returns => TagConfigurationInterface)
-    // updateTagConfiguration(@Args('input') input: UpdateTagConfigurationInput): TagConfiguration {
-    //     return this.tagService.updateTagConfiguration(input)
-    // }
 }

@@ -1,4 +1,4 @@
-import {createUnionType} from "@nestjs/graphql";
+import {createUnionType, Field, ObjectType} from "@nestjs/graphql";
 import {ExpenseDto} from "../../expense/dto/expense.dto";
 import {CardDto} from "../../card/dto/card.dto";
 
@@ -10,3 +10,4 @@ export const TaggedEntityDto = createUnionType({
         else return ExpenseDto
     }
 });
+

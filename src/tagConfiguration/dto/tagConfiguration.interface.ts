@@ -1,8 +1,8 @@
 import { Field, Float, Int, InterfaceType } from '@nestjs/graphql'
 import {TagConfigurationType, TaggableEntities} from "../../common/enum/tagType.enum";
-import {ValueListConfigurationDto} from "./valueListTagConfiguration.dto";
-import {StringConfigurationDto} from "./stringTagConfiguration.dto";
-import {NumberConfigurationDto} from "./numberTagConfiguration.dto";
+import {ValueListConfigurationDto} from "./TypeConfiguration/valueListTagConfiguration.dto";
+import {StringConfigurationDto} from "./TypeConfiguration/stringTagConfiguration.dto";
+import {NumberConfigurationDto} from "./TypeConfiguration/numberTagConfiguration.dto";
 
 
 @InterfaceType('TagConfigurationInterface', {

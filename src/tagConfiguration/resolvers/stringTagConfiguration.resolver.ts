@@ -3,7 +3,7 @@ import {TagConfigurationResolver} from "./tagConfiguration.resolver";
 import {TagConfigurationService} from "../tagConfiguration.service";
 import {TagConfiguration} from "../interface/tagConfiguration";
 import {TagConfigurationType} from "../../common/enum/tagType.enum";
-import {StringConfigurationDto} from "../dto/stringTagConfiguration.dto";
+import {StringConfigurationDto} from "../dto/TypeConfiguration/stringTagConfiguration.dto";
 
 @Resolver(() => StringConfigurationDto)
 export class StringTagConfigurationResolver extends TagConfigurationResolver{

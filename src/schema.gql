@@ -52,7 +52,12 @@ type ValueListConfigurationDto implements TagConfigurationInterface {
   type: TagConfigurationType!
   allowMultipleValues: Boolean!
   taggableEntities: [TaggableEntities!]!
-  valueList: [String!]!
+  valueList(valueListPagination: OffsetPaginationInput = {offset: 0, limit: 20}): [String!]!
+}
+
+input OffsetPaginationInput {
+  offset: Int!
+  limit: Int!
 }
 
 type StringConfigurationDto implements TagConfigurationInterface {
@@ -78,9 +83,27 @@ type Query {
   getExpense(id: Float!): Expense!
   getAllExpenses: [Expense!]!
   getTagConfiguration(id: Float!): TagConfigurationInterface!
-  getAllTagConfigurations: [TagConfigurationInterface!]!
+  getAllTagConfigurations(pagination: OffsetPaginationInput = {offset: 0, limit: 20}, sorting: ConfigSort, filter: ConfigFilter): [TagConfigurationInterface!]!
   getCard(id: Float!): Card!
   getAllCards: [Card!]!
+}
+
+input ConfigSort {
+  sortBy: ConfigSortKey!
+  sortDirection: SortDirection! = ASC
+}
+
+enum ConfigSortKey {
+  id
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+input ConfigFilter {
+  ids: [Int!]
 }
 
 type Mutation {
