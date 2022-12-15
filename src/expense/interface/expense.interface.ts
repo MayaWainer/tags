@@ -1,6 +1,6 @@
-import {TaggableObject} from "../../tag/interface/taggable.interface";
+import {TaggableEntity} from "../../tag/interface/tag.interface";
 
-export interface Expense extends TaggableObject{
+export interface Expense extends TaggableEntity{
     id: number
     amountInCardCurrency: number
     conversionRate: number

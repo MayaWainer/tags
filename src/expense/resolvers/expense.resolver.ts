@@ -17,7 +17,7 @@ export class ExpenseResolver extends TaggableResolver{
     }
 
     @Query(returns => [ExpenseDto])
-    getAllExpense(): Expense[] {
+    getAllExpenses(): Expense[] {
         return this.expenseService.getAll()
     }
 }

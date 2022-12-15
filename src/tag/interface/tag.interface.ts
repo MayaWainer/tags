@@ -1,5 +1,9 @@
+export interface TaggableEntity {
+    tags: Tag[]
+}
+
 export interface Tag {
-    id: number
+    name: string
     configurationId: number
     values: TagValue[]
 }

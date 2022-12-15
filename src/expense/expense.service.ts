@@ -1,19 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import {mockExpenses} from "./mockData/expenses.mock";
+import {Injectable} from '@nestjs/common';
 import {Expense} from "./interface/expense.interface";
+import {RepositoryService} from "../mockData/repository.mock";
+import {Entities} from "../common/enum/tagType.enum";
 
 @Injectable()
 export class ExpenseService {
-    readonly expenses: Expense[]
-    constructor() {
-        this.expenses = mockExpenses
-    }
+    constructor(private readonly ExpenseRepo: RepositoryService<Expense>) {}
 
     get(id: number): Expense {
-        return this.expenses.find((e)=> e.id === id)
+        return this.ExpenseRepo.getOne(Entities.Expense, id)
     }
 
     getAll(): Expense[] {
-        return this.expenses
+        return this.ExpenseRepo.getAll(Entities.Expense)
     }
 }

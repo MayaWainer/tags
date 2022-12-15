@@ -1,56 +1,59 @@
-import { Injectable } from '@nestjs/common';
-import { mockTags} from "./mockData/tags.mock";
-import {FindManyTags} from "./input/findManyTags.input";
-import {Tag} from "./interface/tag.interface";
+import {Injectable} from '@nestjs/common';
+import {UpsertTagInput} from "./input/upsertTag.input";
+import {TagConfigurationService} from "../tagConfiguration/tagConfiguration.service";
+import {TagConfiguration} from "../tagConfiguration/interface/tagConfiguration";
+import {Entities, TagConfigurationType, TaggableEntities} from "../common/enum/tagType.enum";
+import {Tag, TaggableEntity} from "./interface/tag.interface";
+import {RepositoryService} from "../mockData/repository.mock";
 
 @Injectable()
 export class TagService {
-    readonly tags: Tag[]
-    constructor() {
-        this.tags = mockTags
+    constructor(private readonly tagConfigService: TagConfigurationService, private readonly taggableEntityRepo: RepositoryService<TaggableEntity>) {
     }
 
-    getTag(id: number): Tag {
-        return this.tags.find((t)=>t.id === id)
+    upsertTag(input: UpsertTagInput): TaggableEntity {
+        const tagConfig = this.tagConfigService.getTagConfiguration(input.configurationId)
+        this.validateTagValues(tagConfig, input.values, input.entity)
+        let tag: Tag = {
+            name: tagConfig.name,
+            configurationId: tagConfig.id,
+            values: input.values
+        }
+        return this.upsertTagInDB(input.entity as unknown as Entities, input.entityId, tag)
     }
 
-    getManyTags(input: FindManyTags): Tag[] {
-        const tags = input.ids.map((id)=> {
-            return this.tags.find((t) => t.id === id)
+    upsertTagInDB(entity: Entities, entityId: number, newTag: Tag): TaggableEntity {
+        const taggableEntity = this.taggableEntityRepo.getOne(entity, entityId)
+        console.log(taggableEntity)
+        const index = taggableEntity.tags.findIndex((tag)=> tag.configurationId === newTag.configurationId)
+        console.log(index)
+        if(index >= 0) taggableEntity.tags[index] = newTag
+        else taggableEntity.tags.push(newTag)
+        console.log(taggableEntity)
+        return this.taggableEntityRepo.update(entity, entityId, taggableEntity)
+    }
+
+    private validateTagValues(tagConfig: TagConfiguration, values: string[], entity: TaggableEntities): void {
+        if(!tagConfig.taggableEntities.includes(entity))
+            throw new Error('tag does not allow this entity')
+        if(!tagConfig.allowMultipleValues && values.length > 1)
+            throw new Error('tag can only have one value')
+        values.map((value)=> {
+            if(tagConfig.type === TagConfigurationType.ValueList) this.validateValueInList(value, tagConfig.valueList)
+            if(tagConfig.type === TagConfigurationType.String)  this.validateStringLength(value, tagConfig.charCount)
+            if(tagConfig.type === TagConfigurationType.Number) this.validateNumberInRange(Number(value), tagConfig.min, tagConfig.max)
         })
-        return tags
     }
 
-    getAllTag(): Tag[] {
-        return this.tags
+    private validateValueInList(value: string, list: string[]): void {
+        if(!list.includes(value)) throw new Error(`value ${value} is too long`)
     }
 
-    // createTag(config: CreateTagConfigurationInput): Tag {
-    //     let tagValidation: TagValidation
-    //     if(config.type === TagType.ValueArray)
-    //         tagValidation = {
-    //             values: config.valueArrayConfig.values
-    //         }
-    //     const nextId = this.tagConfigurations.length+1
-    //     const newTagConfig = {
-    //         id: nextId,
-    //         name: config.name,
-    //         type: config.type,
-    //         validation: tagValidation
-    //     }
-    //     this.tagConfigurations.push(newTagConfig)
-    //     return newTagConfig
-    // }
+    private validateStringLength(string: string, charCount: number): void {
+        if(string.length > charCount) throw new Error(`string ${string} is too long`)
+    }
 
-    // updateTag(input: UpdateTagConfigurationInput): TagConfiguration {
-    //     const configIndex = this.tagConfigurations.findIndex((c)=>c.id === input.id)
-    //     if(!configIndex) throw new Error('configuration does not exist')
-    //
-    //     const newConfig = this.tagConfigurations[configIndex]
-    //     if(input.name) newConfig.name = input.name
-    //     if(input.valueArrayConfig  && "values" in newConfig.validation)
-    //         newConfig.validation.values = input.valueArrayConfig.values
-    //     this.tagConfigurations[configIndex] = newConfig
-    //     return newConfig
-    // }
+    private validateNumberInRange(number: number, min: number, max: number): void {
+        if(number < min || number > max) throw new Error(`number ${number} is not in range`)
+    }
 }

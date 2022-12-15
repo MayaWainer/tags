@@ -24,8 +24,8 @@ export class TagConfigurationResolver {
         return this.tagService.createTagConfiguration(input)
     }
 
-    @Mutation(returns => TagConfigurationInterface)
-    updateTagConfiguration(@Args('input') input: UpdateTagConfigurationInput): TagConfiguration {
-        return this.tagService.updateTagConfiguration(input)
-    }
+    // @Mutation(returns => TagConfigurationInterface)
+    // updateTagConfiguration(@Args('input') input: UpdateTagConfigurationInput): TagConfiguration {
+    //     return this.tagService.updateTagConfiguration(input)
+    // }
 }

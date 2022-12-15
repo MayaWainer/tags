@@ -4,25 +4,26 @@
 
 interface TagConfigurationInterface {
   id: Int!
-  type: TagType!
   name: String!
+  type: TagConfigurationType!
+  allowMultipleValues: Boolean!
+  taggableEntities: [TaggableEntities!]!
 }
 
-enum TagType {
-  ValueArray
+enum TagConfigurationType {
+  ValueList
   Number
+  String
 }
 
-type ValueArrayTagConfigurationDto implements TagConfigurationInterface {
-  id: Int!
-  type: TagType!
-  name: String!
-  values: [String!]!
+enum TaggableEntities {
+  Expense
+  Card
 }
 
 type Tag {
-  id: Int!
-  tagConfiguration: TagConfigurationInterface!
+  name: String!
+  configurationId: Float!
   values: [String!]!
 }
 
@@ -39,37 +40,82 @@ interface Taggable {
   tags: [Tag!]!
 }
 
-type Query {
-  getExpense(id: Float!): Expense!
-  getAllExpense: [Expense!]!
-  getTag(id: Float!): Tag!
-  getManyTags(input: FindManyTags!): [Tag!]!
-  getAllTags: [Tag!]!
-  getTagConfiguration(id: Float!): TagConfigurationInterface!
-  getAllTagConfigurations: [TagConfigurationInterface!]!
+type Card implements Taggable {
+  tags: [Tag!]!
+  id: Int!
+  nameOnCard: String!
 }
 
-input FindManyTags {
-  ids: [Int!]!
+type ValueListConfigurationDto implements TagConfigurationInterface {
+  id: Int!
+  name: String!
+  type: TagConfigurationType!
+  allowMultipleValues: Boolean!
+  taggableEntities: [TaggableEntities!]!
+  valueList: [String!]!
+}
+
+type StringConfigurationDto implements TagConfigurationInterface {
+  id: Int!
+  name: String!
+  type: TagConfigurationType!
+  allowMultipleValues: Boolean!
+  taggableEntities: [TaggableEntities!]!
+  charCount: Float!
+}
+
+type NumberConfigurationDto implements TagConfigurationInterface {
+  id: Int!
+  name: String!
+  type: TagConfigurationType!
+  allowMultipleValues: Boolean!
+  taggableEntities: [TaggableEntities!]!
+  min: Float!
+  max: Float!
+}
+
+type Query {
+  getExpense(id: Float!): Expense!
+  getAllExpenses: [Expense!]!
+  getTagConfiguration(id: Float!): TagConfigurationInterface!
+  getAllTagConfigurations: [TagConfigurationInterface!]!
+  getCard(id: Float!): Card!
+  getAllCards: [Card!]!
 }
 
 type Mutation {
+  upsertTag(input: CreateTagInput!): TaggedEntityDto!
   createTagConfiguration(input: CreateTagConfigurationInput!): TagConfigurationInterface!
-  updateTagConfiguration(input: UpdateTagConfigurationInput!): TagConfigurationInterface!
+}
+
+union TaggedEntityDto = Expense | Card
+
+input CreateTagInput {
+  configurationId: Int!
+  values: [String!]!
+  entity: TaggableEntities!
+  entityId: Float!
 }
 
 input CreateTagConfigurationInput {
   name: String!
-  type: TagType!
-  valueArrayConfig: ValueArrayConfigInput!
+  allowMultipleValues: Boolean!
+  taggableEntities: [TaggableEntities!]!
+  type: TagConfigurationType!
+  valueListTagConfig: ValueListTagConfigInput
+  stringTagConfig: StringTagConfigInput
+  numberTagConfig: NumberTagConfigInput
 }
 
-input ValueArrayConfigInput {
+input ValueListTagConfigInput {
   values: [String!]!
 }
 
-input UpdateTagConfigurationInput {
-  id: Int!
-  name: String!
-  valueArrayConfig: ValueArrayConfigInput!
+input StringTagConfigInput {
+  charCount: Float!
+}
+
+input NumberTagConfigInput {
+  min: Float!
+  max: Float!
 }

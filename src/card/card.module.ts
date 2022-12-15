@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import {ExpenseService} from "./expense.service";
-import {ExpenseResolver} from "./resolvers/expense.resolver";
 import {TagModule} from "../tag/tag.module";
+import {CardService} from "./card.service";
+import {CardResolver} from "./resolvers/card.resolver";
 import {RepositoryModuleMock} from "../mockData/repository.module.mock";
 
 @Module({
     imports: [TagModule, RepositoryModuleMock],
-    providers: [ExpenseService, ExpenseResolver],
+    providers: [CardService, CardResolver],
 })
-export class ExpenseModule {}
+export class CardModule {}

@@ -1,5 +1,7 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import {ValueArrayConfigInput} from "./valueArrayConfig.input";
+import {ValueListConfigInput} from "./valueListConfig.input";
+import {StringConfigInput} from "./StringConfig.input";
+import {NumberTagConfigInput} from "./numberConfig.input";
 
 @InputType('UpdateTagConfigurationInput')
 export class UpdateTagConfigurationInput{
@@ -9,6 +11,12 @@ export class UpdateTagConfigurationInput{
     @Field()
     name?: string
 
-    @Field(() => ValueArrayConfigInput)
-    valueArrayConfig?: ValueArrayConfigInput
+    @Field(() => ValueListConfigInput)
+    valueListTagConfig?: ValueListConfigInput
+
+    @Field(() => StringConfigInput)
+    stringTagConfig?: StringConfigInput
+
+    @Field(() => NumberTagConfigInput)
+    numberTagConfig?: NumberTagConfigInput
 }

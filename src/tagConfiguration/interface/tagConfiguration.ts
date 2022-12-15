@@ -1,19 +1,28 @@
-import {TagConfigurationType} from "../../common/enum/tagType.enum";
+import {TagConfigurationType, TaggableEntities} from "../../common/enum/tagType.enum";
 
-export interface TagConfiguration {
+export interface configuration{
     id: number
     name: string
-    type: TagConfigurationType
-    validation: TagValidation
+    allowMultipleValues: boolean
+    taggableEntities: TaggableEntities[]
 }
 
-export type TagValidation = ValueArrayTagValidation | NumberTagValidation
+export type TagConfiguration = configuration & TagValidation
 
-export interface ValueArrayTagValidation {
-    values: string[]
+export type TagValidation = ValueListTagValidation | NumberTagValidation | StringTagValidation
+
+export interface ValueListTagValidation {
+    type: TagConfigurationType.ValueList
+    valueList: string[]
 }
 
 export interface NumberTagValidation {
-    min: number
-    max: number
+    type: TagConfigurationType.Number
+    min?: number
+    max?: number
+}
+
+export interface StringTagValidation {
+    type: TagConfigurationType.String
+    charCount?: number
 }
