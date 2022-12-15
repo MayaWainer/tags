@@ -2,7 +2,7 @@ import { Field, Float, Int, ObjectType } from '@nestjs/graphql'
 import {TagConfigurationType, TaggableEntities} from "../../../common/enum/tagType.enum";
 import {TagConfigurationInterface} from "../tagConfiguration.interface";
 
-@ObjectType('StringConfigurationDto', {
+@ObjectType('StringConfiguration', {
     implements: () => [TagConfigurationInterface]
 })
 export class StringConfigurationDto implements TagConfigurationInterface {

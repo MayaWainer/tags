@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-interface TagConfigurationInterface {
+interface TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
@@ -46,7 +46,7 @@ type Card implements Taggable {
   nameOnCard: String!
 }
 
-type ValueListConfigurationDto implements TagConfigurationInterface {
+type ValueListConfiguration implements TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
@@ -60,7 +60,7 @@ input OffsetPaginationInput {
   limit: Int!
 }
 
-type StringConfigurationDto implements TagConfigurationInterface {
+type StringConfiguration implements TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
@@ -69,7 +69,7 @@ type StringConfigurationDto implements TagConfigurationInterface {
   charCount: Float!
 }
 
-type NumberConfigurationDto implements TagConfigurationInterface {
+type NumberConfiguration implements TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
@@ -82,8 +82,8 @@ type NumberConfigurationDto implements TagConfigurationInterface {
 type Query {
   getExpense(id: Float!): Expense!
   getAllExpenses: [Expense!]!
-  getTagConfiguration(id: Float!): TagConfigurationInterface!
-  getAllTagConfigurations(pagination: OffsetPaginationInput = {offset: 0, limit: 20}, sorting: ConfigSort, filter: ConfigFilter): [TagConfigurationInterface!]!
+  getTagConfiguration(id: Float!): TagConfiguration!
+  getAllTagConfigurations(pagination: OffsetPaginationInput = {offset: 0, limit: 20}, sorting: ConfigSort, filter: ConfigFilter): [TagConfiguration!]!
   getCard(id: Float!): Card!
   getAllCards: [Card!]!
 }
@@ -107,11 +107,11 @@ input ConfigFilter {
 }
 
 type Mutation {
-  upsertTag(input: CreateTagInput!): TaggedEntityDto!
-  createTagConfiguration(input: CreateTagConfigurationInput!): TagConfigurationInterface!
+  upsertTag(input: CreateTagInput!): TaggedEntity!
+  createTagConfiguration(input: CreateTagConfigurationInput!): TagConfiguration!
 }
 
-union TaggedEntityDto = Expense | Card
+union TaggedEntity = Expense | Card
 
 input CreateTagInput {
   configurationId: Int!

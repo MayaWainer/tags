@@ -5,7 +5,7 @@ import {StringConfigurationDto} from "./TypeConfiguration/stringTagConfiguration
 import {NumberConfigurationDto} from "./TypeConfiguration/numberTagConfiguration.dto";
 
 
-@InterfaceType('TagConfigurationInterface', {
+@InterfaceType('TagConfiguration', {
     resolveType: (value) => {
         switch (value.type){
             case TagConfigurationType.ValueList: return ValueListConfigurationDto
