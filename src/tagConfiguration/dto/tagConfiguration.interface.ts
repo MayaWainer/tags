@@ -26,8 +26,8 @@ export abstract class TagConfigurationInterface {
     type!: TagConfigurationType
 
     @Field(() => Boolean)
-    allowMultipleValues!: boolean
+    allowMultiple!: boolean
 
     @Field(()=> [TaggableEntities])
-    taggableEntities!: TaggableEntities[]
+    applyTo!: TaggableEntities[]
 }

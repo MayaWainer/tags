@@ -1,8 +1,8 @@
 import {Field, InputType, Int} from '@nestjs/graphql'
 import {TaggableEntities} from "../../common/enum/tagType.enum";
 
-@InputType('CreateTagInput')
-export class UpsertTagInput {
+@InputType('TagResourceInput')
+export class TagResourceInput {
 
     @Field(()=>Int)
     configurationId!: number

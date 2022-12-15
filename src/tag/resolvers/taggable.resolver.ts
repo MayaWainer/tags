@@ -3,7 +3,7 @@ import {TagService} from "../tag.service";
 import {TaggableDto} from "../dto/taggable.dto";
 import {TagDto} from "../dto/tag.dto";
 import {Tag, TaggableEntity} from "../interface/tag.interface";
-import {UpsertTagInput} from "../input/upsertTag.input";
+import {TagResourceInput} from "../input/upsertTag.input";
 import {TaggedEntityDto} from "../dto/taggedEntity.dto";
 
 @Resolver(() => TaggableDto)
@@ -16,7 +16,7 @@ export class TaggableResolver {
     }
 
     @Mutation(() => TaggedEntityDto)
-    upsertTag(@Args('input') input: UpsertTagInput): TaggableEntity {
-        return this.tagService.upsertTag(input)
+    tagResource(@Args('input') input: TagResourceInput): TaggableEntity {
+        return this.tagService.tagResource(input)
     }
 }

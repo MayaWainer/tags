@@ -17,12 +17,11 @@ export class ValueListConfigurationDto implements TagConfigurationInterface {
     type!: TagConfigurationType.ValueList
 
     @Field(() => Boolean)
-    allowMultipleValues!: boolean
+    allowMultiple!: boolean
 
     @Field(()=> [TaggableEntities])
-    taggableEntities!: TaggableEntities[]
+    applyTo!: TaggableEntities[]
 
-    //TODO: this length of the list-of-values can vary drastically. (can be hundreds of values). - should be paginated
     @Field(() => [String])
     valueList!: string[]
 }

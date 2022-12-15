@@ -17,10 +17,10 @@ export class NumberConfigurationDto implements TagConfigurationInterface {
     type!: TagConfigurationType.Number
 
     @Field(() => Boolean)
-    allowMultipleValues!: boolean
+    allowMultiple!: boolean
 
     @Field(()=> [TaggableEntities])
-    taggableEntities!: TaggableEntities[]
+    applyTo!: TaggableEntities[]
 
     @Field()
     min?: number

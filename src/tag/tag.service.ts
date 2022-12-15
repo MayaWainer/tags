@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {UpsertTagInput} from "./input/upsertTag.input";
+import {TagResourceInput } from "./input/upsertTag.input";
 import {TagConfigurationService} from "../tagConfiguration/tagConfiguration.service";
 import {TagConfiguration} from "../tagConfiguration/interface/tagConfiguration";
 import {Entities, TagConfigurationType, TaggableEntities} from "../common/enum/tagType.enum";
@@ -11,7 +11,7 @@ export class TagService {
     constructor(private readonly tagConfigService: TagConfigurationService, private readonly taggableEntityRepo: RepositoryService<TaggableEntity>) {
     }
 
-    upsertTag(input: UpsertTagInput): TaggableEntity {
+    tagResource(input: TagResourceInput): TaggableEntity {
         const tagConfig = this.tagConfigService.getTagConfiguration(input.configurationId)
         this.validateTagValues(tagConfig, input.values, input.entity)
         let tag: Tag = {

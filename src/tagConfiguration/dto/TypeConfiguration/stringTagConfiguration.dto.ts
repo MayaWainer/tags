@@ -17,10 +17,10 @@ export class StringConfigurationDto implements TagConfigurationInterface {
     type!: TagConfigurationType.String
 
     @Field(() => Boolean)
-    allowMultipleValues!: boolean
+    allowMultiple!: boolean
 
     @Field(()=> [TaggableEntities])
-    taggableEntities!: TaggableEntities[]
+    applyTo!: TaggableEntities[]
 
     @Field()
     charCount?: number

@@ -6,8 +6,8 @@ interface TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
-  allowMultipleValues: Boolean!
-  taggableEntities: [TaggableEntities!]!
+  allowMultiple: Boolean!
+  applyTo: [TaggableEntities!]!
 }
 
 enum TagConfigurationType {
@@ -50,8 +50,8 @@ type ValueListConfiguration implements TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
-  allowMultipleValues: Boolean!
-  taggableEntities: [TaggableEntities!]!
+  allowMultiple: Boolean!
+  applyTo: [TaggableEntities!]!
   valueList(valueListPagination: OffsetPaginationInput = {offset: 0, limit: 20}): [String!]!
 }
 
@@ -64,8 +64,8 @@ type StringConfiguration implements TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
-  allowMultipleValues: Boolean!
-  taggableEntities: [TaggableEntities!]!
+  allowMultiple: Boolean!
+  applyTo: [TaggableEntities!]!
   charCount: Float!
 }
 
@@ -73,8 +73,8 @@ type NumberConfiguration implements TagConfiguration {
   id: Int!
   name: String!
   type: TagConfigurationType!
-  allowMultipleValues: Boolean!
-  taggableEntities: [TaggableEntities!]!
+  allowMultiple: Boolean!
+  applyTo: [TaggableEntities!]!
   min: Float!
   max: Float!
 }
@@ -107,13 +107,13 @@ input ConfigFilter {
 }
 
 type Mutation {
-  upsertTag(input: CreateTagInput!): TaggedEntity!
+  tagResource(input: TagResourceInput!): TaggedEntity!
   createTagConfiguration(input: CreateTagConfigurationInput!): TagConfiguration!
 }
 
 union TaggedEntity = Expense | Card
 
-input CreateTagInput {
+input TagResourceInput {
   configurationId: Int!
   values: [String!]!
   entity: TaggableEntities!
