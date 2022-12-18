@@ -7,7 +7,7 @@ export const mockTagConfigurations : TagConfiguration[] = [
         name: 'trip name',
         type: TagConfigurationType.ValueList,
         valueList: ['spain', 'romania', 'israel', 'england'],
-        allowMultipleValues: false,
+        allowMultiple: false,
         taggableEntities: [TaggableEntities.Expense, TaggableEntities.Card]
     },
     {
@@ -15,7 +15,7 @@ export const mockTagConfigurations : TagConfiguration[] = [
         name: 'subscription name',
         type: TagConfigurationType.ValueList,
         valueList: ['aws','rav kav','ten bis','netflix','mondial khan 11'],
-        allowMultipleValues: false,
+        allowMultiple: false,
         taggableEntities: [TaggableEntities.Expense, TaggableEntities.Card]
     },
     {
@@ -23,7 +23,7 @@ export const mockTagConfigurations : TagConfiguration[] = [
         name: 'who took part in this meal expense without me TT',
         type: TagConfigurationType.ValueList,
         valueList: ['tal', 'reut', 'mor', 'tamar', 'michal', 'maya', 'tzach?'],
-        allowMultipleValues: true,
+        allowMultiple: true,
         taggableEntities: [TaggableEntities.Expense]
     }
 ]

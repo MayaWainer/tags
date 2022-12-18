@@ -21,9 +21,68 @@ enum TaggableEntities {
   Card
 }
 
+type PaginatedValueList {
+  items: [String!]!
+  metadata: PaginationMetaData!
+}
+
+type PaginationMetaData {
+  """The total count of the items matching the search criteria"""
+  totalCount: Int!
+}
+
+type ValueListConfiguration implements TagConfiguration {
+  id: Int!
+  name: String!
+  type: TagConfigurationType!
+  allowMultiple: Boolean!
+  applyTo: [TaggableEntities!]!
+  valueList(pagination: PaginationInput = {offset: 0, limit: 20}, sorting: ValueListSort, filter: ValueListFilter): PaginatedValueList!
+}
+
+input PaginationInput {
+  offset: Int!
+  limit: PositiveInt!
+}
+
+"""Integers that will have a value greater than 0."""
+scalar PositiveInt
+
+input ValueListSort {
+  sortDirection: SortDirection! = ASC
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+input ValueListFilter {
+  values: [String!]!
+}
+
+type StringConfiguration implements TagConfiguration {
+  id: Int!
+  name: String!
+  type: TagConfigurationType!
+  allowMultiple: Boolean!
+  applyTo: [TaggableEntities!]!
+  charCount: Float!
+}
+
+type NumberConfiguration implements TagConfiguration {
+  id: Int!
+  name: String!
+  type: TagConfigurationType!
+  allowMultiple: Boolean!
+  applyTo: [TaggableEntities!]!
+  min: Float!
+  max: Float!
+}
+
 type Tag {
   name: String!
-  configurationId: Float!
+  configuration: TagConfiguration!
   values: [String!]!
 }
 
@@ -46,46 +105,41 @@ type Card implements Taggable {
   nameOnCard: String!
 }
 
-type ValueListConfiguration implements TagConfiguration {
-  id: Int!
-  name: String!
-  type: TagConfigurationType!
-  allowMultiple: Boolean!
-  applyTo: [TaggableEntities!]!
-  valueList(valueListPagination: OffsetPaginationInput = {offset: 0, limit: 20}): [String!]!
+type PaginatedExpenses {
+  items: [Expense!]!
+  metadata: PaginationMetaData!
 }
 
-input OffsetPaginationInput {
-  offset: Int!
-  limit: Int!
+type PaginatedConfig {
+  items: [TagConfiguration!]!
+  metadata: PaginationMetaData!
 }
 
-type StringConfiguration implements TagConfiguration {
-  id: Int!
-  name: String!
-  type: TagConfigurationType!
-  allowMultiple: Boolean!
-  applyTo: [TaggableEntities!]!
-  charCount: Float!
-}
-
-type NumberConfiguration implements TagConfiguration {
-  id: Int!
-  name: String!
-  type: TagConfigurationType!
-  allowMultiple: Boolean!
-  applyTo: [TaggableEntities!]!
-  min: Float!
-  max: Float!
+type PaginatedCards {
+  items: [Card!]!
+  metadata: PaginationMetaData!
 }
 
 type Query {
   getExpense(id: Float!): Expense!
-  getAllExpenses: [Expense!]!
+  getAllExpensesPaginated(pagination: PaginationInput = {offset: 0, limit: 20}, sorting: ExpenseSort, filter: ExpensesFilter): PaginatedExpenses!
   getTagConfiguration(id: Float!): TagConfiguration!
-  getAllTagConfigurations(pagination: OffsetPaginationInput = {offset: 0, limit: 20}, sorting: ConfigSort, filter: ConfigFilter): [TagConfiguration!]!
+  getAllTagConfigurations(pagination: PaginationInput = {offset: 0, limit: 20}, sorting: ConfigSort, filter: ConfigFilter): PaginatedConfig!
   getCard(id: Float!): Card!
-  getAllCards: [Card!]!
+  getAllCardsPaginated(pagination: PaginationInput = {offset: 0, limit: 20}, sorting: CardSort, filter: CardsFilter): PaginatedCards!
+}
+
+input ExpenseSort {
+  sortBy: ExpenseSortKey!
+  sortDirection: SortDirection! = ASC
+}
+
+enum ExpenseSortKey {
+  id
+}
+
+input ExpensesFilter {
+  ids: [Int!]
 }
 
 input ConfigSort {
@@ -97,12 +151,20 @@ enum ConfigSortKey {
   id
 }
 
-enum SortDirection {
-  ASC
-  DESC
+input ConfigFilter {
+  ids: [Int!]
 }
 
-input ConfigFilter {
+input CardSort {
+  sortBy: CardSortKey!
+  sortDirection: SortDirection! = ASC
+}
+
+enum CardSortKey {
+  id
+}
+
+input CardsFilter {
   ids: [Int!]
 }
 
@@ -122,7 +184,7 @@ input TagResourceInput {
 
 input CreateTagConfigurationInput {
   name: String!
-  allowMultipleValues: Boolean!
+  allowMultiple: Boolean!
   taggableEntities: [TaggableEntities!]!
   type: TagConfigurationType!
   valueListTagConfig: ValueListTagConfigInput

@@ -3,18 +3,14 @@ import {TagConfigurationService} from "../tagConfiguration.service";
 import {TagConfiguration} from "../interface/tagConfiguration";
 import {TagConfigurationInterface} from "../dto/tagConfiguration.interface";
 import {CreateTagConfigurationInput} from "../input/createTagConfiguration.input";
-import {GetManyConfigurationsArgs} from "../dto/getAll.args";
-import {ValueListArgs} from "../dto/valueList.args";
-import {TagConfigurationType, TaggableEntities} from "../../common/enum/tagType.enum";
+import {TaggableEntities} from "../../common/enum/tagType.enum";
+import {IPaginatedType} from "../../common/pagination/paginated";
+import {GetManyConfigurationsArgs} from "../dto/args/getMany.args";
+import {PaginatedConfig} from "../dto/config.paginated";
 
 @Resolver(() => TagConfigurationInterface)
 export class TagConfigurationResolver {
     constructor(protected readonly tagService: TagConfigurationService) {}
-
-    @ResolveField(() => Boolean)
-    allowMultiple(@Parent() config: TagConfiguration): boolean {
-        return config.allowMultipleValues
-    }
 
     @ResolveField(() => [TaggableEntities])
     applyTo(@Parent() config: TagConfiguration): TaggableEntities[] {
@@ -26,8 +22,8 @@ export class TagConfigurationResolver {
         return this.tagService.getTagConfiguration(id)
     }
 
-    @Query(returns => [TagConfigurationInterface])
-    getAllTagConfigurations(@Args() args: GetManyConfigurationsArgs): TagConfiguration[] {
+    @Query(returns => PaginatedConfig)
+    getAllTagConfigurations(@Args() args: GetManyConfigurationsArgs): IPaginatedType<TagConfiguration>{
         return this.tagService.getAllTagConfigurationsPaginated(args)
     }
 

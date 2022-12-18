@@ -33,7 +33,7 @@ export class TagService {
     private validateTagValues(tagConfig: TagConfiguration, values: string[], entity: TaggableEntities): void {
         if(!tagConfig.taggableEntities.includes(entity))
             throw new Error('tag does not allow this entity')
-        if(!tagConfig.allowMultipleValues && values.length > 1)
+        if(!tagConfig.allowMultiple && values.length > 1)
             throw new Error('tag can only have one value')
         values.map((value)=> {
             if(tagConfig.type === TagConfigurationType.ValueList) this.validateValueInList(value, tagConfig.valueList)

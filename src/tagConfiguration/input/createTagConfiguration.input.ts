@@ -11,7 +11,7 @@ export class CreateTagConfigurationInput{
     name!: string
 
     @Field(() => Boolean)
-    allowMultipleValues!: boolean
+    allowMultiple!: boolean
 
     @Field(()=> [TaggableEntities])
     taggableEntities!: TaggableEntities[]

@@ -3,8 +3,9 @@ import {CreateTagConfigurationInput} from "./input/createTagConfiguration.input"
 import {Entities, TagConfigurationType} from "../common/enum/tagType.enum";
 import {TagConfiguration, TagValidation} from "./interface/tagConfiguration";
 import {RepositoryService} from "../mockData/repository.mock";
-import {ConfigSortKey, SortDirection} from "../common/enum/enum";
-import {GetManyConfigurationsArgs} from "./dto/getAll.args";
+import {GetManyConfigurationsArgs} from "./dto/args/getMany.args";
+import {paginateResults} from "../common/paginationFuncs";
+import {IPaginatedType} from "../common/pagination/paginated";
 
 @Injectable()
 export class TagConfigurationService {
@@ -14,12 +15,9 @@ export class TagConfigurationService {
         return this.configRepo.getOne(Entities.TagConfiguration, id)
     }
 
-    getAllTagConfigurationsPaginated(args: GetManyConfigurationsArgs): TagConfiguration[] {
+    getAllTagConfigurationsPaginated(args: GetManyConfigurationsArgs): IPaginatedType<TagConfiguration> {
         let configs = this.configRepo.getAll(Entities.TagConfiguration)
-        if(args.filter && args.filter.ids) configs = this.getFilteredIds(configs,"id",args.filter.ids)
-        if(args.sorting) configs = this.getSorted(configs, args.sorting.sortBy, args.sorting.sortDirection)
-        if(args.pagination) configs = this.getPaginated(configs, args.pagination.offset, args.pagination.limit)
-        return configs
+        return paginateResults(configs, args)
     }
 
     createTagConfiguration(config: CreateTagConfigurationInput): TagConfiguration {
@@ -44,29 +42,29 @@ export class TagConfigurationService {
         const newTagConfig: TagConfiguration= {
             id: nextId,
             name: config.name,
-            allowMultipleValues: config.allowMultipleValues,
+            allowMultiple: config.allowMultiple,
             taggableEntities: config.taggableEntities,
             ...tagValidation
         }
         return this.configRepo.create(Entities.TagConfiguration, newTagConfig)
     }
 
-    private getPaginated<E>(object: E[],offset: number, limit: number): E[]{
-        return object.slice(offset,(limit + offset))
-    }
-
-    private getSorted<E>(object: E[],key: ConfigSortKey, direction: SortDirection): E[]{
-        return object.sort((a, b) => {
-            let sortFunc = 0
-            if(typeof a[key] === "number") sortFunc = a[key] - b[key]
-            if(a[key] < b[key]) sortFunc = -1
-            if(a[key] > b[key]) sortFunc = 1
-            if(direction === SortDirection.DESC) return -sortFunc
-            return sortFunc
-        })
-    }
-
-    private getFilteredIds<E>(object: E[], key: string, values: number[] ): E[]{
-        return object.filter((o)=> values.includes(o[key]))
-    }
+    // private getPaginated<E>(object: E[],offset: number, limit: number): E[]{
+    //     return object.slice(offset,(limit + offset))
+    // }
+    //
+    // private getSorted<E>(object: E[],key: ConfigSortKey, direction: SortDirection): E[]{
+    //     return object.sort((a, b) => {
+    //         let sortFunc = 0
+    //         if(typeof a[key] === "number") sortFunc = a[key] - b[key]
+    //         if(a[key] < b[key]) sortFunc = -1
+    //         if(a[key] > b[key]) sortFunc = 1
+    //         if(direction === SortDirection.DESC) return -sortFunc
+    //         return sortFunc
+    //     })
+    // }
+    //
+    // private getFilteredIds<E>(object: E[], key: string, values: number[] ): E[]{
+    //     return object.filter((o)=> values.includes(o[key]))
+    // }
 }

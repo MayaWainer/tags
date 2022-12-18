@@ -12,6 +12,7 @@ export class TaggableResolver {
 
     @ResolveField(() => [TagDto])
     tags(@Parent() object: TaggableEntity): Tag[] {
+        if(object.tags.length === 0) return null
         return object.tags
     }
 

@@ -1,9 +1,12 @@
-import { Args, Query, Resolver, ResolveField, Parent } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import {ExpenseDto} from "../dto/expense.dto";
 import {ExpenseService} from "../expense.service";
 import {Expense} from "../interface/expense.interface";
 import {TaggableResolver} from "../../tag/resolvers/taggable.resolver";
 import {TagService} from "../../tag/tag.service";
+import {IPaginatedType} from "../../common/pagination/paginated";
+import {PaginatedExpenses} from "../dto/expenses.paginated";
+import {GetManyExpensesArgs} from "../dto/args/getMany.args";
 
 @Resolver(() => ExpenseDto)
 export class ExpenseResolver extends TaggableResolver{
@@ -16,8 +19,8 @@ export class ExpenseResolver extends TaggableResolver{
         return this.expenseService.get(id)
     }
 
-    @Query(returns => [ExpenseDto])
-    getAllExpenses(): Expense[] {
-        return this.expenseService.getAll()
+    @Query(returns => PaginatedExpenses)
+    getAllExpensesPaginated(@Args() args: GetManyExpensesArgs): IPaginatedType<Expense>{
+        return this.expenseService.getAllExpensesPaginated(args)
     }
 }
