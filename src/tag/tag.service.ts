@@ -23,7 +23,7 @@ export class TagService {
     }
 
     upsertTagInDB(entity: Entities, entityId: number, newTag: Tag): TaggableEntity {
-        const taggableEntity = this.taggableEntityRepo.getOne(entity, entityId)
+        const taggableEntity = this.taggableEntityRepo.getOne(entity, 'id', entityId)
         const index = taggableEntity.tags.findIndex((tag)=> tag.configurationId === newTag.configurationId)
         if(index >= 0) taggableEntity.tags[index] = newTag
         else taggableEntity.tags.push(newTag)

@@ -7,8 +7,12 @@ import {TaggableEntities} from "../../common/enum/tagType.enum";
 import {IPaginatedType} from "../../common/pagination/paginated";
 import {GetManyConfigurationsArgs} from "../dto/args/getMany.args";
 import {PaginatedConfig} from "../dto/config.paginated";
+import {UsePipes, ValidationPipe} from "@nestjs/common";
+import {GraphQLVoid} from "graphql-scalars";
+import {UpdateTagConfigurationInput} from "../input/updateTagConfiguration.input";
 
 @Resolver(() => TagConfigurationInterface)
+@UsePipes(new ValidationPipe())
 export class TagConfigurationResolver {
     constructor(protected readonly tagService: TagConfigurationService) {}
 
@@ -31,4 +35,14 @@ export class TagConfigurationResolver {
     createTagConfiguration(@Args('input') input: CreateTagConfigurationInput): TagConfiguration {
         return this.tagService.createTagConfiguration(input)
     }
+
+    @Mutation(returns => TagConfigurationInterface)
+    updateTagConfiguration(@Args('input') input: UpdateTagConfigurationInput): TagConfiguration {
+        return this.tagService.updateTagConfiguration(input)
+    }
+
+    // @Mutation(returns => GraphQLVoid)
+    // deleteTagConfiguration(@Args('id') id: number): void {
+        // return this.tagService.deleteTagConfiguration(input)
+    // }
 }

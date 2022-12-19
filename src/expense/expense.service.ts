@@ -11,7 +11,7 @@ export class ExpenseService {
     constructor(private readonly ExpenseRepo: RepositoryService<Expense>) {}
 
     get(id: number): Expense {
-        return this.ExpenseRepo.getOne(Entities.Expense, id)
+        return this.ExpenseRepo.getOne(Entities.Expense, 'id', id)
     }
 
     getAllExpensesPaginated(args: GetManyExpensesArgs): IPaginatedType<Expense> {

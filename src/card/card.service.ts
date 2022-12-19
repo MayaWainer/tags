@@ -11,7 +11,7 @@ export class CardService {
     constructor(private readonly cardRepo: RepositoryService<Card>) {}
 
     get(id: number): Card {
-        return this.cardRepo.getOne(Entities.Card, id)
+        return this.cardRepo.getOne(Entities.Card,'id', id)
     }
 
     getAllCardsPaginated(args: GetManyCardsArgs): IPaginatedType<Card> {

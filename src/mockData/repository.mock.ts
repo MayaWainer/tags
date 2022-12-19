@@ -24,8 +24,8 @@ export class RepositoryService<E> {
             }
     }
 
-    getOne(entity: Entities, id: number): E{
-        return this.repository[entity].find((e)=>e.id === id)
+    getOne(entity: Entities, key: string, value: any): E{
+        return this.repository[entity].find((e)=>e[key] === value)
     }
 
     getAll(entity: Entities): E[]{

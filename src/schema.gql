@@ -171,6 +171,7 @@ input CardsFilter {
 type Mutation {
   tagResource(input: TagResourceInput!): TaggedEntity!
   createTagConfiguration(input: CreateTagConfigurationInput!): TagConfiguration!
+  updateTagConfiguration(input: UpdateTagConfigurationInput!): TagConfiguration!
 }
 
 union TaggedEntity = Expense | Card
@@ -203,4 +204,18 @@ input StringTagConfigInput {
 input NumberTagConfigInput {
   min: Float!
   max: Float!
+}
+
+input UpdateTagConfigurationInput {
+  id: Float!
+  allowMultiple: Boolean
+  taggableEntities: [TaggableEntities!]
+  valueListTagConfig: UpdateValueListTagInput
+  stringTagConfig: StringTagConfigInput
+  numberTagConfig: NumberTagConfigInput
+}
+
+input UpdateValueListTagInput {
+  addValues: [String!]
+  removeValues: [String!]
 }
