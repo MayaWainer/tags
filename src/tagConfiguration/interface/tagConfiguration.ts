@@ -1,13 +1,13 @@
 import {TagConfigurationType, TaggableEntities} from "../../common/enum/tagType.enum";
 
-export interface configuration{
+export interface Configuration{
     id: number
     name: string
     allowMultiple: boolean
     taggableEntities: TaggableEntities[]
 }
 
-export type TagConfiguration = configuration & TagValidation
+export type TagConfiguration = Configuration & TagValidation
 
 export type TagValidation = ValueListTagValidation | NumberTagValidation | StringTagValidation
 

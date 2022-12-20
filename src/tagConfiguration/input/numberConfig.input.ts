@@ -1,11 +1,11 @@
 import {Field, InputType} from '@nestjs/graphql'
 
 @InputType('NumberTagConfigInput')
-export class NumberTagConfigInput{
+export class NumberTagConfigInput {
 
-    @Field()
+    @Field({ nullable: true })
     min?: number
 
-    @Field()
+    @Field({ nullable: true })
     max?: number
 }

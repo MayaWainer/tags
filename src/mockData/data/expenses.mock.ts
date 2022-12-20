@@ -8,9 +8,9 @@ export const mockExpenses : Expense[] = [
         merchantName: 'merchant name',
         createdAt: '01-01-2020',
         tags: [{
-            name: 'tag name',
+            name: 'trip name',
             configurationId: 1,
-            values: []
+            values: ['spain']
         }]
     },
     {
@@ -20,9 +20,9 @@ export const mockExpenses : Expense[] = [
         merchantName: 'name2',
         createdAt: '01-02-2020',
         tags: [{
-            name: 'tag2 name',
+            name: 'subscription name',
             configurationId: 2,
-            values: []
+            values: ['rav kav']
         }]
     },
     {
@@ -32,9 +32,9 @@ export const mockExpenses : Expense[] = [
         merchantName: 'name3',
         createdAt: '01-05-2020',
         tags: [{
-            name: 'djfkdjfkld',
+            name: 'who took part in this meal expense without me TT',
             configurationId: 3,
-            values: []
+            values: ['tamar','reut']
         }]
     }
 ]

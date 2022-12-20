@@ -96,7 +96,7 @@ export class TagConfigurationService {
         if(!config.stringTagConfig) throw new Error('missing tag configuration input for String tag')
         return {
             type: TagConfigurationType.String,
-            charCount: config.stringTagConfig.charCount ?? 255 //default value
+            charCount: config.stringTagConfig.charCount
         }
     }
 }

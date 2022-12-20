@@ -45,7 +45,7 @@ const sort = <E>(arr: E[], direction: SortDirection, key?: SortKey): E[]=>{
     })
 }
 
-const filter = <E>(arr: E[], values: any[], key?: string ): E[]=>{
+export const filter = <E>(arr: E[], values: any[], key?: string ): E[]=>{
     return arr.filter((o)=> {
         if (key) return values.includes(o[key])
         return values.includes(o)

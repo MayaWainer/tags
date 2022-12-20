@@ -29,5 +29,5 @@ export class CreateTagConfigurationInput{
     stringTagConfig?: StringConfigInput
 
     @Field(() => NumberTagConfigInput, {nullable: true})
-    numberTagConfig?: NumberTagConfigInput
+    numberTagConfig?: NumberTagConfigInput | null
 }

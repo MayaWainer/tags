@@ -123,6 +123,7 @@ type PaginatedCards {
 type Query {
   getExpense(id: Float!): Expense!
   getAllExpensesPaginated(pagination: PaginationInput = {offset: 0, limit: 20}, sorting: ExpenseSort, filter: ExpensesFilter): PaginatedExpenses!
+  exportAllExpenses(filter: ExpensesFilter!): String!
   getTagConfiguration(id: Float!): TagConfiguration!
   getAllTagConfigurations(pagination: PaginationInput = {offset: 0, limit: 20}, sorting: ConfigSort, filter: ConfigFilter): PaginatedConfig!
   getCard(id: Float!): Card!
@@ -170,6 +171,8 @@ input CardsFilter {
 
 type Mutation {
   tagResource(input: TagResourceInput!): TaggedEntity!
+  updateTag(input: UpdateTagInput!): TaggedEntity!
+  removeTag(input: RemoveTagInput!): TaggedEntity!
   createTagConfiguration(input: CreateTagConfigurationInput!): TagConfiguration!
   updateTagConfiguration(input: UpdateTagConfigurationInput!): TagConfiguration!
 }
@@ -179,6 +182,20 @@ union TaggedEntity = Expense | Card
 input TagResourceInput {
   configurationId: Int!
   values: [String!]!
+  entity: TaggableEntities!
+  entityId: Float!
+}
+
+input UpdateTagInput {
+  configurationId: Int!
+  addValues: [String!]
+  removeValues: [String!]
+  entity: TaggableEntities!
+  entityId: Float!
+}
+
+input RemoveTagInput {
+  configurationId: Int!
   entity: TaggableEntities!
   entityId: Float!
 }
@@ -198,12 +215,15 @@ input ValueListTagConfigInput {
 }
 
 input StringTagConfigInput {
-  charCount: Float!
+  charCount: PositiveFloat
 }
 
+"""Floats that will have a value greater than 0."""
+scalar PositiveFloat
+
 input NumberTagConfigInput {
-  min: Float!
-  max: Float!
+  min: Float
+  max: Float
 }
 
 input UpdateTagConfigurationInput {
