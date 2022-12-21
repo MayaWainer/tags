@@ -3,6 +3,7 @@ import {Expense} from "../../expense/interface/expense.interface";
 export const mockExpenses : Expense[] = [
     {
         id: 1,
+        companyId: 1,
         amountInCardCurrency: 10,
         conversionRate: 1,
         merchantName: 'merchant name',
@@ -15,6 +16,7 @@ export const mockExpenses : Expense[] = [
     },
     {
         id: 2,
+        companyId: 1,
         amountInCardCurrency: 12,
         conversionRate: 10,
         merchantName: 'name2',
@@ -27,6 +29,7 @@ export const mockExpenses : Expense[] = [
     },
     {
         id: 3,
+        companyId: 1,
         amountInCardCurrency: 15,
         conversionRate: 0.5,
         merchantName: 'name3',

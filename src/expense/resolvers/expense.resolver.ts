@@ -9,10 +9,11 @@ import {PaginatedExpenses} from "../dto/expenses.paginated";
 import {GetManyExpensesArgs} from "../dto/args/getMany.args";
 import {GraphQLVoid} from "graphql-scalars";
 import {ExpensesFilter} from "../dto/args/pagination/filter";
+import {ExportService} from "../export";
 
 @Resolver(() => ExpenseDto)
 export class ExpenseResolver extends TaggableResolver{
-    constructor(private readonly expenseService: ExpenseService, readonly tagService: TagService) {
+    constructor(private readonly expenseService: ExpenseService, readonly tagService: TagService, readonly exportService: ExportService) {
         super(tagService)
     }
 
@@ -28,6 +29,7 @@ export class ExpenseResolver extends TaggableResolver{
 
     @Query(returns => String)
     async exportAllExpenses(@Args('filter') filter: ExpensesFilter): Promise<string>{
-        return this.expenseService.exportAllExpensesPaginated(filter)
+        // return this.expenseService.exportAllExpensesPaginated(filter)
+        return this.exportService.exportAllExpensesPaginated(filter)
     }
 }

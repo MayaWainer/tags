@@ -3,6 +3,7 @@ import {TagConfigurationType, TaggableEntities} from "../../common/enum/tagType.
 export interface Configuration{
     id: number
     name: string
+    companyId: number
     allowMultiple: boolean
     taggableEntities: TaggableEntities[]
 }

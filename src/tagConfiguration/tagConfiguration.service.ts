@@ -29,12 +29,29 @@ export class TagConfigurationService {
         const newTagConfig: TagConfiguration= {
             id: nextId,
             name: config.name,
+            companyId: 1,
             allowMultiple: config.allowMultiple,
             taggableEntities: config.taggableEntities,
             ...tagValidation
         }
         return this.configRepo.create(Entities.TagConfiguration, newTagConfig)
     }
+
+    // loadTagConfiguration(config: CreateTagConfigurationInput): any {
+    //     let alreadyExist = this.configRepo.getOne(Entities.TagConfiguration, 'name', config.name)
+    //     if(alreadyExist) throw new Error('a tag already exists with this name')
+    //     // let tagValidation = this.createTagValidation(config)
+    //     // const nextId = this.configRepo.getNextId(Entities.TagConfiguration)
+    //     // const newTagConfig: TagConfiguration= {
+    //     //     id: nextId,
+    //     //     name: config.name,
+    //     //     companyId: 1,
+    //     //     allowMultiple: config.allowMultiple,
+    //     //     taggableEntities: config.taggableEntities,
+    //     //     ...tagValidation
+    //     // }
+    //     // return this.configRepo.create(Entities.TagConfiguration, newTagConfig)
+    // }
 
     updateTagConfiguration(input: UpdateTagConfigurationInput): TagConfiguration {
         let config = this.configRepo.getOne(Entities.TagConfiguration, 'id', input.id)

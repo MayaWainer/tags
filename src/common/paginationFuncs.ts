@@ -8,23 +8,25 @@ export type SortKey = ExpenseSortKey | CardSortKey | ConfigSortKey
 export const paginateResults = <E>( object: E[], args: FindManyPaginatedArgs): IPaginatedType<E> => {
     let paginated = object
     if(args.filter && args.filter.ids) paginated = filter(paginated, args.filter.ids, 'id')
+    const count = paginated.length
     if(args.sorting) paginated = sort(paginated, args.sorting.sortDirection, args.sorting.sortBy as unknown as SortKey)
     if(args.pagination) paginated = paginate(paginated, args.pagination.offset, args.pagination.limit)
-    return formatPaginatedResult(paginated)
+    return formatPaginatedResult(paginated, count)
 }
 
 export const paginateStringArray = ( object: string[], args: ValueListArgs): IPaginatedType<string> => {
     let paginated = object
     if(args.filter) paginated = filter(paginated, args.filter.values)
+    const count = paginated.length
     if(args.sorting) paginated = sort(paginated, args.sorting.sortDirection)
     if(args.pagination) paginated = paginate(paginated, args.pagination.offset, args.pagination.limit)
-    return formatPaginatedResult(paginated)
+    return formatPaginatedResult(paginated, count)
 }
 
-const formatPaginatedResult = <E>(paginated: E[]): IPaginatedType<E> => {
+const formatPaginatedResult = <E>(paginated: E[], count: number): IPaginatedType<E> => {
     return {
         items: paginated,
-        metadata: { totalCount: paginated.length }
+        metadata: { totalCount: count }
     }
 }
 
