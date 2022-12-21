@@ -1,10 +1,10 @@
 import {Field, InputType} from '@nestjs/graphql'
 import { IsArray, ArrayMinSize } from 'class-validator';
-import {TagConfigurationType, TaggableEntities} from "../../common/enum/tagType.enum";
+import { TaggableEntities} from "../../common/enum/tagType.enum";
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
 
-@InputType('CreateTagConfigurationInput')
-export class CreateTagConfigurationInput{
+@InputType('LoadValueTagConfigurationInput')
+export class LoadValueTagConfigurationInput{
 
     @Field()
     name!: string
@@ -16,9 +16,6 @@ export class CreateTagConfigurationInput{
     @IsArray()
     @ArrayMinSize(1)
     taggableEntities!: TaggableEntities[]
-
-    @Field(() => TagConfigurationType)
-    type!: TagConfigurationType
 
     @Field(() => GraphQLUpload)
     valuesFile!: FileUpload

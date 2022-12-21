@@ -10,6 +10,7 @@ import {PaginatedConfig} from "../dto/config.paginated";
 import {UsePipes, ValidationPipe} from "@nestjs/common";
 import {GraphQLVoid} from "graphql-scalars";
 import {UpdateTagConfigurationInput} from "../input/updateTagConfiguration.input";
+import {LoadValueTagConfigurationInput} from "../input/loadTagConfiguration.input";
 
 @Resolver(() => TagConfigurationInterface)
 @UsePipes(new ValidationPipe())
@@ -41,8 +42,8 @@ export class TagConfigurationResolver {
         return this.tagService.updateTagConfiguration(input)
     }
 
-    // @Mutation(returns => GraphQLVoid)
-    // deleteTagConfiguration(@Args('id') id: number): void {
-        // return this.tagService.deleteTagConfiguration(input)
-    // }
+    @Mutation(returns => TagConfigurationInterface)
+    async loadValueTagConfiguration(@Args('input') input: LoadValueTagConfigurationInput): Promise<TagConfiguration> {
+        return this.tagService.loadValueTagConfiguration(input)
+    }
 }

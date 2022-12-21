@@ -7,6 +7,9 @@ import {GetManyConfigurationsArgs} from "./dto/args/getMany.args";
 import {paginateResults} from "../common/paginationFuncs";
 import {IPaginatedType} from "../common/pagination/paginated";
 import {UpdateTagConfigurationInput} from "./input/updateTagConfiguration.input";
+import {LoadValueTagConfigurationInput} from "./input/loadTagConfiguration.input";
+import {FileUpload} from "graphql-upload";
+import {parse} from "csv-parse";
 
 @Injectable()
 export class TagConfigurationService {
@@ -37,21 +40,16 @@ export class TagConfigurationService {
         return this.configRepo.create(Entities.TagConfiguration, newTagConfig)
     }
 
-    // loadTagConfiguration(config: CreateTagConfigurationInput): any {
-    //     let alreadyExist = this.configRepo.getOne(Entities.TagConfiguration, 'name', config.name)
-    //     if(alreadyExist) throw new Error('a tag already exists with this name')
-    //     // let tagValidation = this.createTagValidation(config)
-    //     // const nextId = this.configRepo.getNextId(Entities.TagConfiguration)
-    //     // const newTagConfig: TagConfiguration= {
-    //     //     id: nextId,
-    //     //     name: config.name,
-    //     //     companyId: 1,
-    //     //     allowMultiple: config.allowMultiple,
-    //     //     taggableEntities: config.taggableEntities,
-    //     //     ...tagValidation
-    //     // }
-    //     // return this.configRepo.create(Entities.TagConfiguration, newTagConfig)
-    // }
+    async loadValueTagConfiguration(config: LoadValueTagConfigurationInput): Promise<TagConfiguration> {
+        let alreadyExist = this.configRepo.getOne(Entities.TagConfiguration, 'name', config.name)
+        if(alreadyExist) throw new Error('a tag already exists with this name')
+        const values = await this.getValuesFromFile(config.valuesFile)
+        return this.createTagConfiguration({
+            ...config,
+            type: TagConfigurationType.ValueList,
+            valueListTagConfig: {values}
+        })
+    }
 
     updateTagConfiguration(input: UpdateTagConfigurationInput): TagConfiguration {
         let config = this.configRepo.getOne(Entities.TagConfiguration, 'id', input.id)
@@ -103,9 +101,10 @@ export class TagConfigurationService {
     private valueListTagValidation(config: CreateTagConfigurationInput): TagValidation{
         if(!config.valueListTagConfig) throw new Error('missing tag configuration input for valueList tag')
         if(config.valueListTagConfig.values.length === 0) throw new Error('missing tag configuration input for valueList tag')
+        const values = new Set(config.valueListTagConfig.values) // get only unique values
         return {
             type: TagConfigurationType.ValueList,
-            valueList: config.valueListTagConfig.values
+            valueList: Array.from(values)
         }
     }
 
@@ -115,5 +114,28 @@ export class TagConfigurationService {
             type: TagConfigurationType.String,
             charCount: config.stringTagConfig.charCount
         }
+    }
+
+    private async getValuesFromFile(file: FileUpload): Promise<string[]>{
+        const fileInput = await file
+        const allowedMimeTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'] // .csv .xls .xlsx
+        if(!allowedMimeTypes.includes(fileInput.mimetype)) throw new Error(`mime type - ${fileInput.mimetype} is not supported`)
+        const stream = fileInput.createReadStream()
+        const values = []
+        return new Promise((resolve, reject) => {
+            stream.pipe(parse())
+                .on("data", function (row) {
+                    values.push(...row)
+                })
+                .on("error", function (error) {
+                    console.log(error.message);
+                    return reject(error.message)
+                })
+                .on("end", function () {
+                    console.log("finished");
+                    if(values.length === 0 ) return reject(`couldn't parse any values from file`)
+                    return resolve(values)
+                })
+        })
     }
 }
