@@ -21,8 +21,11 @@ export class TagService {
     tagResource(input: TagResourceInput): TaggableEntity {
         const entity = input.entity as unknown as Entities
         const entityObj = this.taggableEntityRepo.getOne(entity, 'id', input.entityId)
-        if(this.tagAlreadyExists(entityObj, input.configurationId)) throw new Error('entity is already tagged by this configuration')
+        if(!entityObj) throw new Error('entity not found')
         const tagConfig = this.tagConfigService.getTagConfiguration(input.configurationId)
+        if(!tagConfig) throw new Error(`couldn't find tag configuration`)
+
+        if(this.tagAlreadyExists(entityObj, input.configurationId)) throw new Error('entity is already tagged by this configuration')
         // this.validateTag(tagConfig, input)
         let newTag: Tag = {
             name: tagConfig.name,

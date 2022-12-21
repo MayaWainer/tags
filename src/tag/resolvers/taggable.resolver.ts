@@ -23,13 +23,13 @@ export class TaggableResolver {
         return this.tagService.tagResource(input)
     }
 
-    @Mutation(() => TaggedEntityDto)
-    updateTag(@Args('input') input: UpdateTagInput): TaggableEntity {
-        return this.tagService.updateTagInDB(input)
-    }
-
-    @Mutation(() => TaggedEntityDto)
-    removeTag(@Args('input') input: RemoveTagInput): TaggableEntity {
-        return this.tagService.removeTag(input)
-    }
+    // @Mutation(() => TaggedEntityDto)
+    // updateTag(@Args('input') input: UpdateTagInput): TaggableEntity {
+    //     return this.tagService.updateTagInDB(input)
+    // }
+    //
+    // @Mutation(() => TaggedEntityDto)
+    // removeTag(@Args('input') input: RemoveTagInput): TaggableEntity {
+    //     return this.tagService.removeTag(input)
+    // }
 }

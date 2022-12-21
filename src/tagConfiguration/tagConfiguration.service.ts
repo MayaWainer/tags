@@ -55,7 +55,10 @@ export class TagConfigurationService {
         let config = this.configRepo.getOne(Entities.TagConfiguration, 'id', input.id)
         if(!config) throw new Error('could not find tag configuration')
         if(typeof input.allowMultiple === 'boolean') config.allowMultiple = input.allowMultiple
-        if(input.taggableEntities && input.taggableEntities.length > 0) config.taggableEntities = input.taggableEntities
+        if(input.taggableEntities) {
+            if(input.taggableEntities.length === 0) throw new Error('tag configuration must be enforced on at least one taggable entity')
+            config.taggableEntities = input.taggableEntities
+        }
         if(input.stringTagConfig && config.type === TagConfigurationType.String)
             config.charCount = input.stringTagConfig.charCount
         if(input.numberTagConfig && config.type === TagConfigurationType.Number)
@@ -70,15 +73,24 @@ export class TagConfigurationService {
         return this.configRepo.update(Entities.TagConfiguration, config.id, config)
     }
 
-    private updateValueList(valueList: string[], addValues?: string[], removeValues?: string[]): string[]{
-        if(addValues) addValues.map(v => {
-            valueList.indexOf(v) === -1 ? valueList.push(v) : console.warn("value already exists", {value: v})
-        })
-        if(removeValues) removeValues.map(v => {
-            let index = valueList.indexOf(v)
-            index > -1 ? valueList.splice(index, 1) : console.warn("cant remove value that does not exist", {value: v})
-        })
-        return valueList
+    // private updateValueList(valueList: string[], addValues?: string[], removeValues?: string[]): string[]{
+    //     const s = new Set(valueList)
+    //     if(addValues) addValues.map(v => {
+    //         const new = s.add(v)
+    //         valueList.indexOf(v) === -1 ? valueList.push(v) : console.warn("value already exists", {value: v})
+    //     })
+    //     if(removeValues) removeValues.map(v => {
+    //         let index = valueList.indexOf(v)
+    //         index > -1 ? valueList.splice(index, 1) : console.warn("cant remove value that does not exist", {value: v})
+    //     })
+    //     return valueList
+    // }
+
+    private updateValueList(valueList: string[], addValues: string[], removeValues: string[]): string[]{
+        let s = new Set(valueList)
+        if(addValues) addValues.map(v => { s.add(v) })
+        if(removeValues) removeValues.map(v => { s.delete(v) })
+        return Array.from(s)
     }
 
     private createTagValidation(config: CreateTagConfigurationInput): TagValidation{
@@ -100,7 +112,7 @@ export class TagConfigurationService {
 
     private valueListTagValidation(config: CreateTagConfigurationInput): TagValidation{
         if(!config.valueListTagConfig) throw new Error('missing tag configuration input for valueList tag')
-        if(config.valueListTagConfig.values.length === 0) throw new Error('missing tag configuration input for valueList tag')
+        if(config.valueListTagConfig.values.length === 0) throw new Error('tag configuration must include at least one value')
         const values = new Set(config.valueListTagConfig.values) // get only unique values
         return {
             type: TagConfigurationType.ValueList,

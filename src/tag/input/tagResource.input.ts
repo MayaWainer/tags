@@ -7,12 +7,18 @@ export class TagResourceInput {
     @Field(()=>Int)
     configurationId!: number
 
-    @Field(() => [String])
-    values!: string[]
-
     @Field(() => TaggableEntities)
     entity!: TaggableEntities
 
     @Field()
     entityId!: number
+
+    @Field(() => [String])
+    values!: string[]
+
+    // @Field(() => [String], {nullable: true})
+    // addValues?: string[]
+    //
+    // @Field(() => [String], {nullable: true})
+    // removeValues?: string[]
 }
