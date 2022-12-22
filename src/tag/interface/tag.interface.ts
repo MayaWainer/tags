@@ -1,4 +1,5 @@
 export interface TaggableEntity {
+    id: number
     tags: Tag[]
 }
 

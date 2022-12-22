@@ -87,8 +87,8 @@ type Tag {
 }
 
 type Expense implements Taggable {
-  tags: [Tag!]!
   id: Int!
+  tags: [Tag!]!
   amountInCardCurrency: Float!
   conversionRate: Float!
   merchantName: String!
@@ -96,12 +96,13 @@ type Expense implements Taggable {
 }
 
 interface Taggable {
+  id: Int!
   tags: [Tag!]!
 }
 
 type Card implements Taggable {
-  tags: [Tag!]!
   id: Int!
+  tags: [Tag!]!
   nameOnCard: String!
 }
 
@@ -170,19 +171,20 @@ input CardsFilter {
 }
 
 type Mutation {
-  tagResource(input: TagResourceInput!): TaggedEntity!
+  tagResource(input: TagResourceInput!): Tagged!
   createTagConfiguration(input: CreateTagConfigurationInput!): TagConfiguration!
   updateTagConfiguration(input: UpdateTagConfigurationInput!): TagConfiguration!
   loadValueTagConfiguration(input: LoadValueTagConfigurationInput!): TagConfiguration!
 }
 
-union TaggedEntity = Expense | Card
+union Tagged = Expense | Card
 
 input TagResourceInput {
   configurationId: Int!
   entity: TaggableEntities!
   entityId: Float!
-  values: [String!]!
+  addValues: [String!]
+  removeValues: [String!]
 }
 
 input CreateTagConfigurationInput {

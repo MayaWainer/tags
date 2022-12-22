@@ -3,7 +3,7 @@ import {ExpenseDto} from "../../expense/dto/expense.dto";
 import {CardDto} from "../../card/dto/card.dto";
 
 export const TaggedEntityDto = createUnionType({
-    name: 'TaggedEntity',
+    name: 'Tagged',
     types: () => [ExpenseDto, CardDto] as const,
     resolveType(value){
         if(value.nameOnCard) return CardDto
