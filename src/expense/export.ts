@@ -46,7 +46,7 @@ export class ExportService {
 
     private transformExportData(params: { rawExportData: Readable }): Readable {
         let configurations = this.configService.getAllTagConfigurationsPaginated({})
-        console.log(configurations)
+        console.log(configurations.items)
         // const CompanyTagNames = configurations.items.map(c => {
         //     return c.name
         // })
@@ -54,7 +54,7 @@ export class ExportService {
             transforms: [
                 (originalRow: Expense) => {
                     try {
-                        let tags = {}
+                        // let tags = {}
                         // CompanyTagNames.map(name => {
                         //     const tag = originalRow.tags.find(t => t.name === name)
                         //     tags[name] = tag? tag.values.join(', ') : ''
@@ -68,13 +68,15 @@ export class ExportService {
                         }
                         originalRow.tags.map((tag)=>{
                             let tagValues = tag.values.join(', ')
-                            let name = configurations.items[tag.configurationId].name
-                            console.log(name)
-                            data[name] = tagValues
+                            let config = configurations.items.find(t => t.id === tag.configurationId)
+                            console.log(config.name)
+                            data[config.name] = tagValues
                         })
                         console.log(data)
+                        console.log(JSON.stringify(data))
                         return data
                     } catch (e) {
+                        console.log(originalRow)
                         throw new Error(`error while transforming original: ${originalRow}`)
                     }
                 }
