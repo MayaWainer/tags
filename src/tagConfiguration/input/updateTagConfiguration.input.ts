@@ -4,6 +4,7 @@ import {ValueListConfigInput} from "./valueListConfig.input";
 import {StringConfigInput} from "./StringConfig.input";
 import {NumberTagConfigInput} from "./numberConfig.input";
 import {UpdateValueListInput} from "./updateValueList.input";
+import {GraphQLPositiveInt} from "graphql-scalars";
 
 @InputType('UpdateTagConfigurationInput')
 export class UpdateTagConfigurationInput {
@@ -13,6 +14,9 @@ export class UpdateTagConfigurationInput {
 
     @Field(() => Boolean, { nullable: true })
     allowMultiple?: boolean
+
+    @Field(() => GraphQLPositiveInt, { nullable: true })
+    taggedValuesLimit?: number
 
     @Field(()=> [TaggableEntities], { nullable: true })
     taggableEntities?: TaggableEntities[]

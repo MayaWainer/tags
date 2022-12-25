@@ -3,6 +3,7 @@ import {TagConfigurationType, TaggableEntities} from "../../common/enum/tagType.
 import {ValueListConfigurationDto} from "./TypeConfiguration/valueListTagConfiguration.dto";
 import {StringConfigurationDto} from "./TypeConfiguration/stringTagConfiguration.dto";
 import {NumberConfigurationDto} from "./TypeConfiguration/numberTagConfiguration.dto";
+import {GraphQLPositiveInt} from "graphql-scalars";
 
 
 @InterfaceType('TagConfiguration', {
@@ -27,6 +28,9 @@ export abstract class TagConfigurationInterface {
 
     @Field(() => Boolean)
     allowMultiple!: boolean
+
+    @Field(() => GraphQLPositiveInt, { nullable: true })
+    taggedValuesLimit?: number
 
     @Field(()=> [TaggableEntities])
     applyTo!: TaggableEntities[]

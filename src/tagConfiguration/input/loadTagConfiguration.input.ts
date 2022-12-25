@@ -2,6 +2,7 @@ import {Field, InputType} from '@nestjs/graphql'
 import { IsArray, ArrayMinSize } from 'class-validator';
 import { TaggableEntities} from "../../common/enum/tagType.enum";
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
+import {GraphQLPositiveInt} from "graphql-scalars";
 
 @InputType('LoadValueTagConfigurationInput')
 export class LoadValueTagConfigurationInput{
@@ -11,6 +12,9 @@ export class LoadValueTagConfigurationInput{
 
     @Field(() => Boolean)
     allowMultiple!: boolean
+
+    @Field(() => GraphQLPositiveInt, { nullable: true })
+    taggedValuesLimit?: number
 
     @Field(()=> [TaggableEntities])
     @IsArray()

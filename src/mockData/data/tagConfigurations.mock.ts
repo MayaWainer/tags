@@ -27,6 +27,7 @@ export const mockTagConfigurations : TagConfiguration[] = [
         type: TagConfigurationType.ValueList,
         valueList: ['tal', 'reut', 'mor', 'tamar', 'michal', 'maya', 'tzach?'],
         allowMultiple: true,
+        taggedValuesLimit: 5,
         taggableEntities: [TaggableEntities.Expense]
     }
 ]

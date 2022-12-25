@@ -34,6 +34,7 @@ export class TagConfigurationService {
             name: config.name,
             companyId: 1,
             allowMultiple: config.allowMultiple,
+            taggedValuesLimit: config.taggedValuesLimit,
             taggableEntities: config.taggableEntities,
             ...tagValidation
         }
@@ -54,7 +55,10 @@ export class TagConfigurationService {
     updateTagConfiguration(input: UpdateTagConfigurationInput): TagConfiguration {
         let config = this.configRepo.getOne(Entities.TagConfiguration, 'id', input.id)
         if(!config) throw new Error('could not find tag configuration')
-        if(typeof input.allowMultiple === 'boolean') config.allowMultiple = input.allowMultiple
+        if(typeof input.allowMultiple === 'boolean') {
+            config.allowMultiple = input.allowMultiple
+            if(input.allowMultiple === true && input.taggedValuesLimit) config.taggedValuesLimit = input.taggedValuesLimit
+        }
         if(input.taggableEntities) {
             if(input.taggableEntities.length === 0) throw new Error('tag configuration must be enforced on at least one taggable entity')
             config.taggableEntities = input.taggableEntities

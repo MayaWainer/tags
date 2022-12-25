@@ -5,6 +5,7 @@ export interface Configuration{
     name: string
     companyId: number
     allowMultiple: boolean
+    taggedValuesLimit?: number
     taggableEntities: TaggableEntities[]
 }
 
