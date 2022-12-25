@@ -46,7 +46,6 @@ export class ExportService {
 
     private transformExportData(params: { rawExportData: Readable }): Readable {
         let configurations = this.configService.getAllTagConfigurationsPaginated({})
-        console.log(configurations.items)
         // const CompanyTagNames = configurations.items.map(c => {
         //     return c.name
         // })
@@ -59,6 +58,7 @@ export class ExportService {
                         //     const tag = originalRow.tags.find(t => t.name === name)
                         //     tags[name] = tag? tag.values.join(', ') : ''
                         // })
+                        console.log('***********************')
                         const data = {
                             id: originalRow.id,
                             'Amount In Card Currency': originalRow.amountInCardCurrency ?? '',
@@ -82,6 +82,7 @@ export class ExportService {
                 }
             ]
         })
+        json2csvTransformer.on('line', line => console.log(line))
         return params.rawExportData.pipe(json2csvTransformer)
     }
 
