@@ -73,19 +73,6 @@ export class TagConfigurationService {
         return this.configRepo.update(Entities.TagConfiguration, config.id, config)
     }
 
-    // private updateValueList(valueList: string[], addValues?: string[], removeValues?: string[]): string[]{
-    //     const s = new Set(valueList)
-    //     if(addValues) addValues.map(v => {
-    //         const new = s.add(v)
-    //         valueList.indexOf(v) === -1 ? valueList.push(v) : console.warn("value already exists", {value: v})
-    //     })
-    //     if(removeValues) removeValues.map(v => {
-    //         let index = valueList.indexOf(v)
-    //         index > -1 ? valueList.splice(index, 1) : console.warn("cant remove value that does not exist", {value: v})
-    //     })
-    //     return valueList
-    // }
-
     private updateValueList(valueList: string[], addValues: string[], removeValues: string[]): string[]{
         let s = new Set(valueList)
         if(addValues) addValues.map(v => { s.add(v) })

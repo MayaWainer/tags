@@ -3,9 +3,6 @@ import {TagConfigurationInterface} from "../../tagConfiguration/dto/tagConfigura
 
 @ObjectType('Tag')
 export class TagDto {
-    @Field()
-    name!: string
-
     @Field(()=> TagConfigurationInterface)
     configuration!: TagConfigurationInterface
 

@@ -81,7 +81,6 @@ type NumberConfiguration implements TagConfiguration {
 }
 
 type Tag {
-  name: String!
   configuration: TagConfiguration!
   values: [String!]!
 }

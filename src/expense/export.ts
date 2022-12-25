@@ -46,26 +46,34 @@ export class ExportService {
 
     private transformExportData(params: { rawExportData: Readable }): Readable {
         let configurations = this.configService.getAllTagConfigurationsPaginated({})
-        const CompanyTagNames = configurations.items.map(c => {
-            return c.name
-        })
+        console.log(configurations)
+        // const CompanyTagNames = configurations.items.map(c => {
+        //     return c.name
+        // })
         const json2csvTransformer = new parser.Transform({
             transforms: [
                 (originalRow: Expense) => {
                     try {
                         let tags = {}
-                        CompanyTagNames.map(name => {
-                            const tag = originalRow.tags.find(t => t.name === name)
-                            tags[name] = tag? tag.values.join(', ') : ''
-                        })
-                        return {
+                        // CompanyTagNames.map(name => {
+                        //     const tag = originalRow.tags.find(t => t.name === name)
+                        //     tags[name] = tag? tag.values.join(', ') : ''
+                        // })
+                        const data = {
                             id: originalRow.id,
                             'Amount In Card Currency': originalRow.amountInCardCurrency ?? '',
                             'Conversion Rate': originalRow.conversionRate ?? '',
                             'Merchant Name': originalRow.merchantName ?? '',
-                            'Date': originalRow.createdAt ?? '',
-                            ...tags
+                            'Date': originalRow.createdAt ?? ''
                         }
+                        originalRow.tags.map((tag)=>{
+                            let tagValues = tag.values.join(', ')
+                            let name = configurations.items[tag.configurationId].name
+                            console.log(name)
+                            data[name] = tagValues
+                        })
+                        console.log(data)
+                        return data
                     } catch (e) {
                         throw new Error(`error while transforming original: ${originalRow}`)
                     }

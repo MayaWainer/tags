@@ -13,9 +13,6 @@ export class TagResourceInput {
     @Field()
     entityId!: number
 
-    // @Field(() => [String])
-    // values!: string[]
-
     @Field(() => [String], {nullable: true})
     addValues?: string[]
 
